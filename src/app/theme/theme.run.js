@@ -5,7 +5,7 @@
         .run(themeRun);
 
     /** @ngInject */
-    function themeRun($timeout, $rootScope, layoutPaths, preloader, $q, baSidebarService, themeLayoutSettings, $window, $http) {
+    function themeRun($timeout, $rootScope, layoutPaths, preloader, $q, baSidebarService, themeLayoutSettings, authorizationService, $state, jwtHelper) {
         $rootScope.username = null;
         $rootScope.password = null;
         var whatToWait = [
@@ -38,9 +38,16 @@
             // perform some asynchronous operation, resolve or reject the promise when appropriate.
             return $q(function (resolve, reject) {
                 var bearer = window.sessionStorage.getItem("bearer");
-                if (bearer) {
-                    $rootScope.$logged = true;
-                    resolve(bearer);
+                
+                if ((bearer != null) && (bearer != "null") && (bearer != undefined) && (bearer != "undefined")) {
+
+                    if (authorizationService.verify(bearer) && !jwtHelper.isTokenExpired(bearer)) {
+                        $rootScope.$logged = true;
+                        resolve(bearer);
+                    } else {
+                        window.sessionStorage.setItem('bearer', null);
+                        $state.go('dashboard');
+                    }
                 } else {
                     $rootScope.$logged = false;
                     // le mettre dans le resolve de cette promesse
@@ -51,21 +58,17 @@
 
         $rootScope.signin = function (username,password) {
             return $q(function (resolve, reject) {
-                var addUserClaimTask = $q.defer();
-                $http.defaults.headers.common['Access-Control-Allow-Origin'] = '*';
-                var signingUrl = 'http://51.136.10.20/mylearningback/api/auth/token';
+                var verifyTokenTask = $q.defer();
+                var signingUrl = 'http://51.136.10.20/mylearningback/pub/auth/token';
 
                 if (!signingUrl) {
-                    var undefinedAddUserClaimApiUrlError = new hqaIdMApiError();
-                    undefinedAddUserClaimApiUrlError.message = "L'adresse de l'API pour exécuter la création d'une revendication d'un utilisateur n'est pas définie.";
-
-                    addUserClaimTask.reject(undefinedAddUserClaimApiUrlError);
-                    return addUserClaimTask.promise;
+                    verifyTokenTask.reject("L'url de verification du jeton d'uahtentication n'est pas définie");
+                    return verifyTokenTask.promise;
                 }
 
                 var payload = new FormData();
-                payload.append('username', 'averdier');
-                payload.append('secret', 'averdier');
+                payload.append('username', username);
+                payload.append('secret', password);
 
                 axios.post(signingUrl, payload)
                     .then(signingComplete, signingFailed);
@@ -73,44 +76,27 @@
 
                 function signingComplete(response) {
                     window.sessionStorage.setItem('bearer', response.data['access_token']);
-                    console.log(response.data['access_token']);
-                    //return response.data;
+                    $rootScope.$logged = true;
+                    $state.reload();
+                    return response.data['access_token'];
                 }
 
             
                 function signingFailed(reason) {
-                    var httpAddUserClaimTask = $q.defer();
-
-                    if (reason.status === 401) {
-                        var unauthorizedError = new hqaIdMApiUnauthorizedError();
-                        unauthorizedError.message = "Vous n'êtes pas autorisé à créer une revendication pour un utilisateur. Contactez votre administrateur fonctionnel pour vous accorder les droits. Si les droits viennent de vous être accordés, veuillez rafraîchir la page.";
-                        unauthorizedError.innerError = reason;
-
-                        httpAddUserClaimTask.reject(unauthorizedError);
-                    } else if (reason.status === 404) {
-                        var notFoundError = new hqaIdMApiError();
-                        notFoundError.message = "L'API de gestion des revendications d'un utilisateur du gestionnaire des identités HQA n'est pas accessible.";
-                        notFoundError.innerError = reason;
-
-                        httpAddUserClaimTask.reject(notFoundError);
-                    } else if (reason.status === 400) {
-                        var idMApiError = new hqaIdMApiError();
-                        idMApiError.message = reason.data.messages[0].message;
-                        idMApiError.innerError = reason;
-
-                        httpAddUserClaimTask.reject(idMApiError);
-                    } else {
-                        var unknownError = new hqaIdMApiError();
-                        unknownError.message = "L'API de gestion des utilisateurs du gestionnaire des identités HQA n'est pas disponible (Statut HTTP: " + reason.status + "). " + reason.data.message + " " + reason.data.messageDetail;
-                        unknownError.innerError = reason;
-
-                        httpAddUserClaimTask.reject(unknownError);
-                    }
-
-                    return httpAddUserClaimTask.promise;
+                    var httpVerifyTokenTask = $q.defer();
+                    window.sessionStorage.setItem('bearer', null);
+                    httpVerifyTokenTask.reject("Erreur lors de la verification du jeton");
+                    $('#loginError').css('display', 'block');
+                    return httpVerifyTokenTask.promise;
                 }
             }, 1000);
         }
+
+        $rootScope.signout = function() {
+            window.sessionStorage.setItem('bearer', null);
+            $state.go('dashboard');
+        }
+
         $rootScope.$baSidebarService = baSidebarService;
     }
 

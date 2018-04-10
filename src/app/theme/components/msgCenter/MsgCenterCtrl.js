@@ -9,104 +9,62 @@
       .controller('MsgCenterCtrl', MsgCenterCtrl);
 
   /** @ngInject */
-  function MsgCenterCtrl($scope, $sce) {
-    $scope.users = {
-      0: {
-        name: 'Vlad',
-      },
-      1: {
-        name: 'Kostya',
-      },
-      2: {
-        name: 'Andrey',
-      },
-      3: {
-        name: 'Nasta',
-      }
-    };
+  function MsgCenterCtrl($scope, $sce, socketio, $log) {
 
-    $scope.notifications = [
-      {
-        userId: 0,
-        template: '&name posted a new article.',
-        time: '1 min ago'
-      },
-      {
-        userId: 1,
-        template: '&name changed his contact information.',
-        time: '2 hrs ago'
-      },
-      {
-        image: 'assets/img/shopping-cart.svg',
-        template: 'New orders received.',
-        time: '5 hrs ago'
-      },
-      {
-        userId: 2,
-        template: '&name replied to your comment.',
-        time: '1 day ago'
-      },
-      {
-        userId: 3,
-        template: 'Today is &name\'s birthday.',
-        time: '2 days ago'
-      },
-      {
-        image: 'assets/img/comments.svg',
-        template: 'New comments on your post.',
-        time: '3 days ago'
-      },
-      {
-        userId: 1,
-        template: '&name invited you to join the event.',
-        time: '1 week ago'
-      }
+ 
+      // connection to socket server 
+
+      // When receive a new message
+      socketio.client.on('newMessage', function (data) {
+          $log.debug("newMessage", data);
+          var notifType = getNotifByType("newMessage");
+          var notifMessage = notifType.template.replace("&name", data.senderName).replace("&assistance", data.assistance);
+          $scope.$apply(function () {
+              $scope.notifications.push({
+                  message: notifMessage,
+                  sender: data.project,
+                  icon: notifType.icon,
+                  href: notifType.href.replace("&id", data.assistance)
+              });
+          });
+      });
+
+      // When receive an assistance demand
+      socketio.client.on('needAssistance', function (data) {
+          $log.debug("needAssistance", data);
+          var notifType = getNotifByType("needAssistance");
+          var notifMessage = notifType.template.replace("&teamName", data.teamName).replace("&projectName", data.projectName);
+          $scope.$apply(function () {
+              $scope.notifications.push({
+                  message: notifMessage,
+                  sender: data.project,
+                  icon: notifType.icon,
+                  href: notifType.href.replace("&id", data.teamName)
+              });
+          });
+      });
+
+    $scope.notificationTemplates = [
+        {
+            type: "newMessage",
+            href: "URLAPITOMESSAGE/&id",
+            icon: "fa fa-comment-o",
+            template: 'Nouveau message ! Demande d\'assistance <b>&assistance</b>'
+        },
+        {
+            type: "needAssistance",
+            href: "URLAPITOMESSAGE/&id",
+            icon: "fa fa-info",
+            template: "<b>&teamName</b> ont besoin d'une assistance sur le projet <b>&projectName</b>"
+        },
+
     ];
 
-    $scope.messages = [
-      {
-        userId: 3,
-        text: 'After you get up and running, you can place Font Awesome icons just about...',
-        time: '1 min ago'
-      },
-      {
-        userId: 0,
-        text: 'You asked, Font Awesome delivers with 40 shiny new icons in version 4.2.',
-        time: '2 hrs ago'
-      },
-      {
-        userId: 1,
-        text: 'Want to request new icons? Here\'s how. Need vectors or want to use on the...',
-        time: '10 hrs ago'
-      },
-      {
-        userId: 2,
-        text: 'Explore your passions and discover new ones by getting involved. Stretch your...',
-        time: '1 day ago'
-      },
-      {
-        userId: 3,
-        text: 'Get to know who we are - from the inside out. From our history and culture, to the...',
-        time: '1 day ago'
-      },
-      {
-        userId: 1,
-        text: 'Need some support to reach your goals? Apply for scholarships across a variety of...',
-        time: '2 days ago'
-      },
-      {
-        userId: 0,
-        text: 'Wrap the dropdown\'s trigger and the dropdown menu within .dropdown, or...',
-        time: '1 week ago'
-      }
-    ];
+    $scope.notifications = [] // notification to show to user
 
-    $scope.getMessage = function(msg) {
-      var text = msg.template;
-      if (msg.userId || msg.userId === 0) {
-        text = text.replace('&name', '<strong>' + $scope.users[msg.userId].name + '</strong>');
-      }
-      return $sce.trustAsHtml(text);
-    };
+
+    var getNotifByType = function (type) {
+        return $scope.notificationTemplates.filter(function (item) { return item.type === type })[0];
+    }
   }
 })();

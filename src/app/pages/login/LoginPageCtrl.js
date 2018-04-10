@@ -7,9 +7,11 @@
   /** @ngInject */
   function LoginPageCtrl($scope, fileReader, $filter, $uibModal) {
 
+    
+
       $scope.user = {
           username: "rlardier",
           password: "password"
       };
-  }s
+  }
 });

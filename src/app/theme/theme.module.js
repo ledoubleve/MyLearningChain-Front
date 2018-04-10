@@ -12,7 +12,9 @@
       'angular.morris-chart',
       'textAngular',
       'BlurAdmin.theme.components',
-      'BlurAdmin.theme.inputs'
+      'BlurAdmin.theme.inputs',
+      'appSettings',
+      'angular-jwt'
   ]);
 
 })();
