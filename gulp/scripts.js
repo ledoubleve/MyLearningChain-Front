@@ -18,8 +18,13 @@ gulp.task('scripts', function() {
   return buildScripts();
 });
 
+
+//path.join(conf.paths.src, '/sass/**/_*.scss'),
+//    '!' + path.join(conf.paths.src, '/sass/theme/conf/**/*.scss'),
+
+
 function buildScripts() {
-  return gulp.src(path.join(conf.paths.src, '/app/**/*.js'))
+    return gulp.src(path.join(conf.paths.src, '/app/**/*.*'))
     .pipe($.eslint())
     .pipe($.eslint.format())
     .pipe($.size())
