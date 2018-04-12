@@ -1,0 +1,27 @@
+﻿<div class="widgets">
+    <div class="row">
+        <div class="col-md-offset-3 col-md-6">
+            <div ng-if="sectionCtrl.cancreatesection" ba-panel ba-panel-title="Ajouter une classe" ba-panel-class="with-scroll">
+                <div>
+                    <form id="createSectionForm" name="createSectionForm" data-ng-submit="sectionCtrl.createSection()">
+                      <div class="form-group">
+                        <label>Année</label>
+                        <input type="number" class="form-control" ng-model='sectionCtrl.sectionProperties.year' placeholder="Année de la classe">
+                      </div>
+                      <div class="form-group">
+                        <label>Nom</label>
+                        <input type="text" class="form-control" ng-model='sectionCtrl.sectionProperties.name' placeholder="Nom de la classe">
+                      </div>
+                      <div class="form-group">
+                        <label>Campus</label>
+                        <div class="btn-group bootstrap-select form-control ng-pristine ng-untouched ng-valid ng-empty">
+                          <select class="form-control selectpicker ng-pristine ng-untouched ng-valid ng-empty" ng-model="sectionCtrl.sectionProperties.campus" ng-options="item.id as item.name for item in sectionCtrl.campuses" selectpicker="" title="Sélectionner un campus" tabindex="-98"></select>
+                        </div>
+                      </div>
+                        <button type="submit" class="btn btn-danger">Ajouter</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

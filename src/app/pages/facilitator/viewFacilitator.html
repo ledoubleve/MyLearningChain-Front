@@ -1,0 +1,50 @@
+﻿<div class="panel panel-blur profile-page animated zoomIn" zoom-in="" ba-panel-blur="" style="background-size: 1519px 854px; background-position: 0px -64px;">
+    <div class="panel-body" ng-show="isReady">
+        <div class="panel-content ng-scope">
+          <h3 class="with-line">{{facilitator.first_name}} {{ facilitator.last_name }}</h3>
+            <div class="row">
+                <div class="col-md-3" style="margin-top: 10px;">
+                    <div class="row clearfix">
+                        <div class="col-lg-6 col-md-12 col-sm-12" style="width: 100%">
+                            <div class="userpic" style="border: 0px solid black; margin: auto">
+                                <div class="userpic-wrapper">
+                                    <img src="{{ facilitator.img_uri }}">
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-9">
+                    <div class="row" style="margin-bottom: 30px;">
+                        <h4>Compétences</h4>
+                        <button ng-repeat="tag in facilitator.tags" class="btn btn-xs btn-info" style="margin-left: 5px;">
+                            <strong>{{ tag }}</strong>
+                        </button>
+                    </div>
+                    <div class="row">
+                        <h4>Prestations disponibles</h4>
+                        <div class="add-row-editable-table" ng-if="isFacilitator && isMe">
+                            <button class="btn btn-primary" ng-click="creation()">Ajouter une prestation</button>
+                        </div>
+                        <table class="table table-hover">
+                            <thead>
+                                <tr class="black-muted-bg">
+                                    <th class="align-left" style="text-align:left">Nom</th>
+                                    <th class="align-right">Coût</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                              <tr ng-repeat="offer in facilitator.offers" class="no-top-border">
+                                <td ng-if="canClaimOffer" ng-class="nowrap" style="text-align:left"><a href ng-click="open(offer)" style="color: white">{{offer.name}}</a></td>
+                                <td ng-if="!canClaimOffer" ng-class="nowrap" style="text-align:left"><span style="color: white">{{offer.name}}</span></td>
+                                <td class="align-right"><a href style="color: white">{{ offer.price }} <i class="fa fa-gg-circle"></i></a></td>
+                                <!--<td class="align-center" style="padding: 3px;"><button class="btn btn-danger" ng-click="confirmDelete(offer)"><i class="fa fa-trash-o" href></i></button></td>-->
+                              </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

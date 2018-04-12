@@ -7,40 +7,86 @@
         .service('authorizationService', authorizationService);
 
     // Injecte les dépendances
-    authorizationService.$inject = ["$http", "jwtHelper", "$q"];
+    authorizationService.$inject = ["$http", "$q", "appSettings"];
 
-    function authorizationService($http, jwtHelper, $q, $state) {
-        $http.defaults.headers.common['Access-Control-Allow-Origin'] = '*';
+    function authorizationService($http, $q, appSettings) {
+        
+        var getAuthorizationService = function getAuthorizationService() {
+            var deferredGet = $q.defer();
+
+            var authorizationService = {};
+
+            authorizationService.get = getAuthorizations;
+            authorizationService.verify = verifySignature;
+
+            authorizationService.roles = getAuthorizations();
+            deferredGet.resolve(authorizationService);
+            return deferredGet.promise;
+        }
+
         function getAuthorizations() {
+            var getTask = $q.defer();
+
             var token = window.sessionStorage.getItem("bearer");
-            if (token == null) {
-                return new {};
+            var verifyUrl = "http://mlcback.westeurope.cloudapp.azure.com/auth/api/auth/verify_token";
+            var config = {
+                headers: { 'Authorization': "Bearer " + window.sessionStorage.getItem("bearer"), 'Access-Control-Allow-Origin': '*' }
+            };
+            var body = { "access_token": token };
+            var authorizations = {};
+
+            if (token == null || token == undefined) {
+                return {};
+            } else {
+                return axios.post(verifyUrl, body, config)
+                    .then(function (response) {
+                        authorizationService.roles = response.data.user.scopes;
+                        authorizationService.getUserId = getUserId;
+                        return response.data.user.scopes;
+                    }, function (reason) {
+                        return reason;
+                    });
             }
+        }
 
+        function getUserId() {
+            var getTask = $q.defer();
 
-            verifySignature(token);
+            var token = window.sessionStorage.getItem("bearer");
+            var verifyUrl = "http://mlcback.westeurope.cloudapp.azure.com/auth/api/auth/verify_token";
+            var config = {
+                headers: { 'Authorization': "Bearer " + window.sessionStorage.getItem("bearer"), 'Access-Control-Allow-Origin': '*' }
+            };
+            var body = { "access_token": token };
+            var authorizations = {};
 
-
-            var tokenPayload = jwtHelper.decodeToken(token);
-
-            var authorization = {};
-
-            // mappe les roles
-            return tokenPayload;
+            if (token == null || token == undefined) {
+                return {};
+            } else {
+                return axios.post(verifyUrl, body, config)
+                    .then(function (response) {
+                        authorizationService.roles = response.data.user.scopes;
+                        return response.data.user.id;
+                    }, function (reason) {
+                        return reason;
+                    });
+            }
         }
 
         function verifySignature(token) {
             var verifyTask = $q.defer();
+            var verifyUrl = "http://mlcback.westeurope.cloudapp.azure.com/auth/api/auth/verify_token";
 
-            var verifyUrl = "http://51.136.10.20/mylearningback/pub/auth/verify_token";
             if (!verifyUrl) {
                 verifyTask.reject("L'url de verification du token n'est pas définie");
                 return verifyTask.promise;
             }
-
+            var config = {
+                headers: { 'Authorization': "Bearer " + window.sessionStorage.getItem("bearer"), 'Access-Control-Allow-Origin': '*' }
+            };
             var body = { "access_token": token };
-            
-            return axios.post(verifyUrl, body)
+
+            return axios.post(verifyUrl, body, config)
                 .then(verifyComplete, verifyFailed);
 
             function verifyComplete(response) {
@@ -50,7 +96,7 @@
 
             function verifyFailed(reason) {
                 var httpVerifyTokenTask = $q.defer();
-                window.sessionStorage.setItem("bearer", null);
+                window.sessionStorage.removeItem("bearer");
                 httpVerifyTokenTask.reject("Erreur lors de la verification du jeton");
 
                 return false;
@@ -58,8 +104,9 @@
         }
 
         return {
-            get: getAuthorizations,
-            verify: verifySignature
-        };
+            get: getAuthorizationService
+        }
     }
+
+    ;
 })();

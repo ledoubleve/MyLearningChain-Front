@@ -22,13 +22,13 @@
   };
 
   // dashboard colors for charts
-  var dashboardColors = {
-      blueStone: '#ff6347',
-      surfieGreen: '#F6CE2D',
-      silverTree: '#8A2BE2',
-    gossip: '#DC143C',
-    white: '#DC143C',
-  };
+    var dashboardColors = {
+        blueStone: '#005562',
+        surfieGreen: '#0e8174',
+        silverTree: '#6eba8c',
+        gossip: '#b9f2a1',
+        white: '#10c4b5',
+    };
 
   angular.module('BlurAdmin.theme')
     .provider('baConfig', configProvider);

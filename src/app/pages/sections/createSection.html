@@ -1,0 +1,45 @@
+﻿<div class="widgets">
+  <div class="row">
+    <div class="col-md-6">
+      <div ba-panel ba-panel-title="Créer une classe" ba-panel-class="with-scroll">
+        <div>
+          <form id="createSectionForm" name="createSectionForm" data-ng-submit="createUserCtrl.createStudent()">
+            <div class="form-group">
+              <label for="sectionProperties.first_name">Prénom</label>
+              <input type="text" class="form-control" ng-model='createUserCtrl.userProperties.first_name' placeholder="Nom d'utilisateur">
+            </div>
+            <div class="form-group">
+              <label for="userProperties.last_name">Nom</label>
+              <input type="text" class="form-control" ng-model='createUserCtrl.userProperties.last_name' placeholder="Nom d'utilisateur">
+            </div>
+            <div class="form-group">
+              <label for="userProperties.email">Email</label>
+              <input type="text" class="form-control" ng-model='createUserCtrl.userProperties.email' placeholder="Nom d'utilisateur">
+            </div>
+            <div class="form-group">
+              <label for="userProperties.username">Nom d'utilisateur</label>
+              <input type="text" class="form-control" ng-model='createUserCtrl.userProperties.username' placeholder="Nom d'utilisateur">
+            </div>
+            <div class="form-group">
+              <label for="userProperties.secret">Mot de passe</label>
+              <input type="password" class="form-control" ng-model='createUserCtrl.userProperties.secret' placeholder="Password">
+            </div>
+            <div class="form-group">
+              <label for="userProperties.img_uri">Photo de l'utilisateur</label>
+              <input type="text" class="form-control" ng-model='createUserCtrl.userProperties.img_uri' placeholder="Photo de l'utilisateur'">
+            </div>
+            <div class="form-group">
+              <label for="userProperties.section">Section</label>
+              <input type="text" class="form-control" ng-model='createUserCtrl.userProperties.section' placeholder="Section">
+            </div>
+            <div class="form-group">
+              <label for="userProperties.campus">Campus</label>
+              <input type="text" class="form-control" ng-model='createUserCtrl.userProperties.campus' placeholder="Campus">
+            </div>
+            <button type="submit" class="btn btn-danger">Créer</button>
+          </form>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

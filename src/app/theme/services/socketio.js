@@ -5,12 +5,12 @@
         .factory('socketio', socketio);
 
     /** @ngInject */
-    function socketio($log, $rootScope) {
+    function socketio($log, $rootScope, appSettings) {
        
         return {
             client: (function () {
-                var client = io.connect("http://localhost:4000");
-                client.emit("register", sessionStorage.getItem("bearer"));
+                var client = io.connect(appSettings.socketUrl);
+                client.emit("register", { token: sessionStorage.getItem('bearer') });
                 return client;
             })(),
             on: function (eventName, callback) {

@@ -31,6 +31,7 @@
     "angular-toastr": "~2.1.1",
     "angular-touch": "~1.5.8",
     "angular-ui-sortable": "~0.15.0",
+    "angular-simple-chat": "~1.0.11",
     "animate.css": "~3.5.2",
     "bootstrap": "~3.3.5",
     "bootstrap-select": "~1.12.1",
@@ -56,7 +57,7 @@
     "angular-xeditable": "~0.5.0",
     "ng-js-tree": "~0.0.7",
     "angular-ui-select": "^0.19.6",
-    "angular-jwt" :  "0.1.9" ,
+    "angular-jwt": "0.1.9",
     "axios": "^0.17.1"
   },
   "resolutions": {

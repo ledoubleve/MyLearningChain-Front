@@ -5,12 +5,13 @@
         .run(themeRun);
 
     /** @ngInject */
-    function themeRun($timeout, $rootScope, layoutPaths, preloader, $q, baSidebarService, themeLayoutSettings, authorizationService, $state, jwtHelper) {
+    function themeRun($timeout, $rootScope, layoutPaths, preloader, $q, baSidebarService, themeLayoutSettings, authorizationService, $state, jwtHelper, appSettings, $window) {
         $rootScope.username = null;
         $rootScope.password = null;
+        var authorizationServiceInstance = null;
         var whatToWait = [
             preloader.loadAmCharts(),
-            $timeout(3000),
+            $timeout(1000),
             checkUserSession()
         ];
 
@@ -32,39 +33,55 @@
             if (!$rootScope.$pageFinishedLoading) {
                 $rootScope.$pageFinishedLoading = true;
             }
-        }, 7000);
+        }, 4000);
 
         function checkUserSession() {
-            // perform some asynchronous operation, resolve or reject the promise when appropriate.
-            return $q(function (resolve, reject) {
-                var bearer = window.sessionStorage.getItem("bearer");
-                
-                if ((bearer != null) && (bearer != "null") && (bearer != undefined) && (bearer != "undefined")) {
+            ensureAuthorizationService().then(function() {
+                // perform some asynchronous operation, resolve or reject the promise when appropriate.
+                return $q(function (resolve, reject) {
+                    var bearer = window.sessionStorage.getItem("bearer");
 
-                    if (authorizationService.verify(bearer) && !jwtHelper.isTokenExpired(bearer)) {
-                        $rootScope.$logged = true;
-                        resolve(bearer);
+                    if ((bearer != null) && (bearer != "null") && (bearer != undefined) && (bearer != "undefined")) {
+
+                        if (authorizationServiceInstance.verify(bearer) && !jwtHelper.isTokenExpired(bearer)) {
+                            $rootScope.$logged = true;
+                            resolve(bearer);
+                        } else {
+                            window.sessionStorage.removeItem('bearer');
+                            $state.go('dashboard');
+                        }
                     } else {
-                        window.sessionStorage.setItem('bearer', null);
-                        $state.go('dashboard');
+                        $rootScope.$logged = false;
+                        // le mettre dans le resolve de cette promesse
+                        reject("L'utilisateur n'est pas connecté");
                     }
-                } else {
-                    $rootScope.$logged = false;
-                    // le mettre dans le resolve de cette promesse
-                    reject("L'utilisateur n'est pas connecté");
-                }
+                });
             });
         }
+        function ensureAuthorizationService() {
+            var deferredAuthorizationService = $q.defer();
+
+            // Obtient le service de gestion des autorisations
+            if (!authorizationServiceInstance) {
+                authorizationService.get().then(function (authorizationService) {
+                    authorizationServiceInstance = authorizationService;
+                    if (authorizationServiceInstance)
+                        deferredAuthorizationService.resolve(authorizationServiceInstance);
+                    else {
+                        deferredAuthorizationService.reject();
+                    }
+                });
+            } else {
+                deferredAuthorizationService.resolve(authorizationServiceInstance);
+            }
+            return deferredAuthorizationService.promise;
+        }
+
 
         $rootScope.signin = function (username,password) {
             return $q(function (resolve, reject) {
                 var verifyTokenTask = $q.defer();
-                var signingUrl = 'http://51.136.10.20/mylearningback/pub/auth/token';
-
-                if (!signingUrl) {
-                    verifyTokenTask.reject("L'url de verification du jeton d'uahtentication n'est pas définie");
-                    return verifyTokenTask.promise;
-                }
+                var signingUrl = appSettings.apiBaseApiUrl + '/auth/token';
 
                 var payload = new FormData();
                 payload.append('username', username);
@@ -84,17 +101,18 @@
             
                 function signingFailed(reason) {
                     var httpVerifyTokenTask = $q.defer();
-                    window.sessionStorage.setItem('bearer', null);
+                    window.sessionStorage.removeItem("bearer");
+
                     httpVerifyTokenTask.reject("Erreur lors de la verification du jeton");
                     $('#loginError').css('display', 'block');
                     return httpVerifyTokenTask.promise;
                 }
-            }, 1000);
+            },500);
         }
 
         $rootScope.signout = function() {
-            window.sessionStorage.setItem('bearer', null);
-            $state.go('dashboard');
+            window.sessionStorage.removeItem("bearer");
+            $window.location.reload();
         }
 
         $rootScope.$baSidebarService = baSidebarService;

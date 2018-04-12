@@ -1,0 +1,18 @@
+﻿<div class="panel panel-blur with-scroll animated" zoom-in="" ba-panel-blur="">
+    <div class="panel-body">
+        <table class="table table-hover">
+            <thead>
+                <tr class="black-muted-bg">
+                    <th>Nom</th>
+                    <th>Token restant</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr ng-repeat="item in ListMyGroupCtrl.groups" class="no-top-border">
+                    <td ng-class="nowrap"><a href style="color: white">{{item.name}}</a></td>
+                    <td class="align-right"><a href style="color: white">{{ item.balance }} <i class="fa fa-gg-circle"></i></a></td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+</div>

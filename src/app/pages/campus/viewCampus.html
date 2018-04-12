@@ -1,0 +1,28 @@
+﻿<div class="panel panel-blur profile-page animated zoomIn" zoom-in="" ba-panel-blur="" style="background-size: 1519px 854px; background-position: 0px -64px;">
+    <div class="panel-body" ng-show="isReady">
+        <div class="panel-content ng-scope">
+            <h3 class="with-line">{{campus.name}}</h3>
+            <div class="row">
+                <br />
+                <h4>Description du campus</h4>
+                <p>{{campus.description}}</p>
+            </div>
+                <div class="row">
+                    <br />
+                    <h4>Projets de ce campus</h4>
+                    <table class="table table-hover">
+                        <thead>
+                            <tr class="black-muted-bg">
+                                <th class="align-left" style="text-align:left">Nom</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr ng-repeat="project in campus.projects" class="no-top-border">
+                                <td ng-class="nowrap" style="text-align:left"><a href style="color: white">{{project.name}}</a></td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+</div>

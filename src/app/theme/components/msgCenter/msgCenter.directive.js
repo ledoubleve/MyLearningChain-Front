@@ -3,9 +3,9 @@
  * created on 16.12.2015
  */
 (function () {
-  'use strict';
+    'use strict';
 
-  angular.module('BlurAdmin.theme.components')
+    angular.module('BlurAdmin.theme.components')
       .directive('msgCenter', msgCenter);
 
   /** @ngInject */

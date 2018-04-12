@@ -47,13 +47,13 @@
     $scope.notificationTemplates = [
         {
             type: "newMessage",
-            href: "URLAPITOMESSAGE/&id",
+            href: "#/claim/listclaims/&id",
             icon: "fa fa-comment-o",
             template: 'Nouveau message ! Demande d\'assistance <b>&assistance</b>'
         },
         {
             type: "needAssistance",
-            href: "URLAPITOMESSAGE/&id",
+            href: "#/claim/listclaims/&id",
             icon: "fa fa-info",
             template: "<b>&teamName</b> ont besoin d'une assistance sur le projet <b>&projectName</b>"
         },

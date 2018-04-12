@@ -1,0 +1,48 @@
+﻿<div class="panel panel-blur profile-page animated zoomIn" zoom-in="" ba-panel-blur="" style="background-size: 1519px 854px; background-position: 0px -64px;">
+    <div class="panel-body" ng-show="isReady">
+        <div class="panel-content ng-scope">
+            <h3 class="with-line">{{ ClaimCtrl.claim.offerName }}</h3>
+            <div class="row">
+                <div class="col-md-3" style="margin-top: 10px;">
+                    <div class="row clearfix">
+                        <div class="col-lg-6 col-md-12 col-sm-12" style="width: 100%">
+                            <div class="userpic" style="border: 0px solid black; margin: auto">
+                                <div class="userpic-wrapper">
+                                    <img src="{{ ClaimCtrl.claim.facilitator.img_uri }}">
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-9">
+                    <div class="row" style="margin-bottom: 30px;">
+                        <h4>Description</h4>
+                        <p>{{ ClaimCtrl.claim.offerDescription }}</p>
+                    </div>
+                    <div class="row">
+                        <h4>Status de la demande</h4>
+                        <p>{{ ClaimCtrl.status[ClaimCtrl.CurrentClaimStatus] }}</p>
+                    </div>
+                    <div class="row">
+                        <h4>Projet</h4>
+                        <p>{{ ClaimCtrl.claim.projectName }}</p>
+                    </div>
+                  <div class="row">
+                    <h4>Groupe concerné</h4>
+                    <p>{{ ClaimCtrl.claim.groupName }}</p>
+                  </div>
+                    <div class="row" ng-if="ClaimCtrl.isFacilitator && !(ClaimCtrl.CurrentClaimStatus === 'validated') && !(ClaimCtrl.CurrentClaimStatus === 'canceled')">
+                        <h4>Action sur la demande</h4>
+                        <button class="btn btn-success" ng-if="ClaimCtrl.CurrentClaimStatus === 'pending'" ng-click="ClaimCtrl.updateStatus('running')">Valider</button>
+                        <button class="btn btn-danger" ng-if="ClaimCtrl.CurrentClaimStatus === 'pending'" ng-click="ClaimCtrl.updateStatus('canceled')">Refuser</button>
+                        
+                        <button class="btn btn-danger" ng-if="ClaimCtrl.CurrentClaimStatus === 'running'" ng-click="ClaimCtrl.updateStatus('validated')">Clore la demande</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+ <chat prestation="{{ ClaimCtrl.claim.offerId }}" claim="{{ ClaimCtrl.claim.claimId }}" status="ClaimCtrl.CurrentClaimStatus" ></chat>
+               

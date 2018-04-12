@@ -1,0 +1,14 @@
+<div class="modal-content">
+    <div class="modal-header bg-danger">
+        <button type="button" class="close" ng-click="$dismiss()" aria-label="Close">
+            <em class="ion-ios-close-empty sn-link-close"></em>
+        </button>
+        <h4 class="modal-title" id="myModalLabel" style="color:white">Suppression</h4>
+    </div>
+    <div class="modal-body">
+        Confirmez-vous la suppression de la demande : <b>{{ selectedOffer.name }}</b>
+    </div>
+    <div class="modal-footer">
+        <button type="button" class="btn btn-primary" ng-click="$dismiss(); deleteOffer(selectedOffer.id)">Confirmer</button>
+    </div>
+</div>

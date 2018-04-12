@@ -1,0 +1,29 @@
+﻿<div class="panel panel-blur profile-page animated zoomIn" zoom-in="" ba-panel-blur="" style="background-size: 1519px 854px; background-position: 0px -64px;" ng-if="vm.messages.length > 0 || vm.status === 'running'">
+    <div class="panel-body" ng-show="isReady">
+        <div class="panel-content ng-scope">
+            <h3 class="with-line">Chat</h3>
+            <div class="row">
+                <div class='col-lg-4 col-md-4 col-xs-4'>
+                    <h4>Eleves</h4>
+                    <table class="table table-hover" ng-show="isReady">
+                        <tr ng-repeat="item in vm.groupInformations.students" class="no-top-border">
+                            <td ng-class="nowrap"><a href style="color: white">{{item.first_name}} {{item.last_name}}</a></td>
+                        </tr>
+                    </table>
+                </div>
+                <div class="col-lg-6 col-md-6 col-xs-6">
+                    <simple-chat style="color: black !important; width: 500px; border: 0px solid black; height: 500px; float: left; margin-right: 10px;"
+                                 messages="vm.messages"
+                                 local-user="vm.currentUser"
+                                 send-button-text="Envoyer"
+                                 show-user-avatar="false"
+                                 send-function="vm.sendMessage"
+                                 show-composer="vm.status === 'running'"
+                                 composer-placeholder-text="Ecrivez votre message ici">
+
+                    </simple-chat>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

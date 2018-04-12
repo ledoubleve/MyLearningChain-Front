@@ -16,10 +16,10 @@
       $scope.doughnutData = {
           labels: [
               'Other',
-              'Search engines',
-              'Referral Traffic',
-              'Direct Traffic',
-              'Ad Campaigns'
+              'Developpeur web',
+              'Data analyste',
+              'Architecte reseau',
+              'Chef de projets'
           ],
           datasets: [
               {

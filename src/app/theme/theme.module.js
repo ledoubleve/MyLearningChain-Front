@@ -6,6 +6,7 @@
   'use strict';
 
   angular.module('BlurAdmin.theme', [
+      'ngRoute',
       'toastr',
       'chart.js',
       'angular-chartist',
@@ -14,7 +15,7 @@
       'BlurAdmin.theme.components',
       'BlurAdmin.theme.inputs',
       'appSettings',
-      'angular-jwt'
+      'angular-jwt',
   ]);
 
 })();

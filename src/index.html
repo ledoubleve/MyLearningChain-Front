@@ -1,7 +1,7 @@
 ﻿<!DOCTYPE html>
 <html lang="en" ng-app="BlurAdmin">
 <head>
-  <meta charset="utf-8">
+  <meta meta charset="utf-8">
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>MyLearningChain</title>
@@ -23,6 +23,11 @@
   <!-- css files will be automatically insert here -->
   <!-- endinject -->
   <!-- endbuild -->
+    <style>
+        button.btn.btn-default {
+            border:none;
+        }
+    </style>
 </head>
 <body>
 <div class="body-bg"></div>
@@ -37,44 +42,31 @@
       <div ui-view autoscroll="true" autoscroll-body-top></div>
     </div>
   </div>
-
-  <footer class="al-footer clearfix">
-    <div class="al-footer-right">Created with <i class="ion-heart"></i></div>
-    <div class="al-footer-main clearfix">
-      <div class="al-copy">Blur Admin 2016</div>
-      <ul class="al-share clearfix">
-        <li><i class="socicon socicon-facebook"></i></li>
-        <li><i class="socicon socicon-twitter"></i></li>
-        <li><i class="socicon socicon-google"></i></li>
-        <li><i class="socicon socicon-github"></i></li>
-      </ul>
-    </div>
-  </footer>
-
   <back-top></back-top>
 </main>
 
 <div id="preloader" ng-show="!$pageFinishedLoading && !$logged">
   <div></div>
 </div>
-
-    <div id="loginForm" style="margin-top:10%">
-        <div id="loginError" class="alert bg-danger closeable col-md-4 col-md-offset-4" role="alert" ng-show="$pageFinishedLoading && !$logged" style="display:none"><button type="button" class="close" aria-label="Close"><span aria-hidden="true">×</span></button> <strong>Oups!</strong> Une erreur est survenue lors de la tentative de connexion.</div>
-        <div id="login" ng-show="$pageFinishedLoading && !$logged" class="col-md-4 col-md-offset-4">
-            <div ba-panel="" ba-panel-title="Se connecter" ba-panel-class="with-scroll">
-                <div class="panel-body">
-                    <div>
-                        <form class="ng-pristine ng-valid ng-scope">
-                            <div class="form-group"><label for="username">Identifiant</label> <input type="text" class="form-control" id="usernameLogin" name="username" ng-model="username" placeholder="Votre identifiant" ng-minlength="3"></div>
-                            <div class="form-group"><label for="password">Mot de passe</label> <input type="password" class="form-control" id="passwordLogin" name="password" ng-model="password" placeholder="Votre mot de passe" ng-minlength="3"></div>
-                            <button type="submit" class="btn btn-default" ng-click="signin(username,password)">Connexion</button>
-                        </form>
-                    </div>
-                </div>
-            </div>
+<div id="loginForm" style="margin-top:10%">
+  <div id="loginError" class="alert bg-danger closeable col-md-4 col-md-offset-4" role="alert" ng-show="$pageFinishedLoading && !$logged" style="display:none"><button type="button" class="close" aria-label="Close"><span aria-hidden="true">×</span></button> <strong>Oups!</strong> Une erreur est survenue lors de la tentative de connexion.</div>
+  <div id="login" ng-show="$pageFinishedLoading && !$logged" class="col-md-4 col-md-offset-4">
+    <div ba-panel="" ba-panel-title="Se connecter" ba-panel-class="with-scroll">
+      <div class="panel-body">
+        <div>
+          <form class="ng-pristine ng-valid ng-scope">
+            <div class="form-group"><label for="username">Identifiant</label> <input type="text" class="form-control" id="usernameLogin" name="username" ng-model="username" placeholder="Votre identifiant" ng-minlength="3"></div>
+            <div class="form-group"><label for="password">Mot de passe</label> <input type="password" class="form-control" id="passwordLogin" name="password" ng-model="password" placeholder="Votre mot de passe" ng-minlength="3"></div>
+            <button type="submit" class="btn btn-default" ng-click="signin(username,password)">Connexion</button>
+          </form>
         </div>
+      </div>
     </div>
-        <!-- build:js(src) scripts/vendor.js -->
+  </div>
+</div>
+  
+
+<!-- build:js(src) scripts/vendor.js -->
         <!-- bower:js -->
         <!-- run `gulp inject` to automatically populate bower script dependencies -->
         <!-- endbower -->

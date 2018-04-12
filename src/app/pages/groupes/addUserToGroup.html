@@ -1,0 +1,25 @@
+﻿<div class="widgets">
+  <div class="row">
+    <div class="col-md-offset-3 col-md-6">
+      <div ng-if="groupeCtrl.canlinkgroup" ba-panel ba-panel-title="Populer un groupe" ba-panel-class="with-scroll">
+        <div>
+          <form id="linkGroupForm" name="linkGroupForm" data-ng-submit="groupeCtrl.linkGroup()">
+            <div class="form-group">
+              <label>Groupe</label>
+              <div class="btn-group bootstrap-select form-control ng-pristine ng-untouched ng-valid ng-empty">
+                <select class="form-control selectpicker ng-pristine ng-untouched ng-valid ng-empty" ng-model="groupeCtrl.populationProperties.id" ng-options="item.id as item.name for item in groupeCtrl.groups" selectpicker="" title="Sélectionner un groupe" tabindex="-98"></select>
+              </div>
+            </div>
+            <div class="form-group">
+              <label>Utilisateur</label>
+              <div class="btn-group bootstrap-select form-control ng-pristine ng-untouched ng-valid ng-empty">
+                <select class="form-control selectpicker ng-pristine ng-untouched ng-valid ng-empty" ng-model="groupeCtrl.populationProperties.sid" ng-options="item.id as item.first_name + ' ' + item.last_name for item in groupeCtrl.students" selectpicker="" title="Sélectionner un etudiant" tabindex="-98"></select>
+              </div>
+            </div>
+            <button type="submit" class="btn btn-danger">Ajouter</button>
+          </form>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

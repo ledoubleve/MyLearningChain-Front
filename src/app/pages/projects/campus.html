@@ -1,0 +1,16 @@
+﻿<div class="panel panel-blur with-scroll animated" zoom-in="" ba-panel-blur="" ng-show="projectCtrl.isReady">
+    <div class="panel-body">
+        <table class="table table-hover">
+            <thead>
+                <tr class="black-muted-bg">
+                    <th>Nom</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr ng-repeat="item in projectCtrl.projectsCampus" class="no-top-border" ng-click="projectCtrl.viewProject(item.id)">
+                    <td ng-class="nowrap"><a href style="color: white">{{item.name}}</a></td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+</div>

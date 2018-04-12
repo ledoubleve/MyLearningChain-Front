@@ -1,0 +1,18 @@
+﻿<div class="panel panel-blur with-scroll animated" zoom-in="" ba-panel-blur="" ng-show="campusListCtrl.isReady">
+    <div class="panel-body">
+        <table class="table table-hover">
+            <thead>
+            <tr>
+                <th class="align-right">Nom</th>
+                <th class="align-right">Nombre de projets</th>
+            </tr>
+            </thead>
+            <tbody>
+                <tr ng-repeat="item in campusListCtrl.campuses" class="no-top-border" ng-click="campusListCtrl.viewCampus(item.id)">
+                    <td ng-class="nowrap"><a href style="color: white">{{item.name}}</a></td>
+                    <td ng-class="nowrap" class="align-right"><a href style="color: white">{{item.projectsCount}}</a></td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+</div>

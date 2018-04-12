@@ -31,30 +31,3 @@
         
     };
 })(angular);
-
-//"use strict";
-
-//(function (angular) {
-//    angular.module("appsettings")
-//        .config(appsettingsConfig);
-
-//    appsettingsConfig.$inject = ["appsettingsConfigProvider"];
-
-//    function appsettingsConfig(appsettingsConfigProvider) {
-
-//        //var appSettingsScript;
-
-//        //$http.get("appsettings.json")
-//        //    .success(function(response) {
-//        //        appSettingsScript = response;
-//        //    });
-
-//        //// Définit les paramètres de l'application
-//        //if (appSettingsScript) {
-//        //    appsettingsConfigProvider.set(JSON.parse(appSettingsScript));
-//        //} else {
-//        //    var $log = angular.injector(["ng"]).get("$log");
-//        //    $log.warn("Erreur lors de la lecture de la configuration de l'application.");
-//        //}
-//    };
-//})(angular);
